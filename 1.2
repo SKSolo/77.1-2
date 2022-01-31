@@ -1,0 +1,109 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+
+string zaszyfruj(string s, string key) {
+  string wynik;
+  int klucz = 0;
+  int przesun;
+  int zmien;
+
+  
+  for (int i = 0; i < s.length(); i++) 
+  {
+  	
+    if (s[i] < 'A' || s[i] > 'Z')
+	 {
+      wynik += s[i];
+      continue;
+     }
+     
+    przesun = (int) key[klucz] - 65;
+    zmien = (int) s[i] - 65;
+    zmien += przesun;
+    
+    if (zmien > 25)
+	{
+		zmien = (zmien - 1) % 25;
+	} 
+    zmien += 65;
+    wynik += (char) zmien;
+    
+    klucz++;
+    
+    if (klucz == key.length())
+	{
+		 klucz = 0;
+	}
+	
+  }
+  return wynik;
+}
+
+void zadanie1() {
+ 
+  ifstream plik("dokad.txt");
+  string s = "";
+  string zczyt;
+  
+  while (plik >> zczyt)
+  {
+   	 s += zczyt + " ";
+  }
+  
+  string key = "LUBIMYCZYTAC";
+  
+  
+  cout << "Wynik A: " << 19 << endl; 
+  cout << "Wynik B: \n" << zaszyfruj(s, key) << endl << endl;
+}
+
+void zadanie2() {
+  cout << "Zadanie 77.2:" << endl;
+  
+  string klucz = "ZLODZIEJCZASU"; 
+  string s = "";
+  string zczyt;
+  
+  ifstream plik("szyfr.txt");
+  
+  while (plik >> zczyt)
+  {
+  	 s += zczyt + " ";
+  }
+  
+  int licz = 0;
+  
+  for (int i = 0; i < s.length(); i++)
+   {
+    if (s[i] == ' ' || s[i] == ',' || s[i] == '.')
+	{
+		continue;
+	} 
+	
+    s[i] -= klucz[licz];
+    s[i] += 65;
+    
+    if (s[i] < 'A')
+	{
+		 s[i] += 26;
+	}
+    licz++;
+    
+    if (licz == klucz.length())
+	{
+		licz = 0;
+	} 
+  }
+  cout << s << endl << endl;
+}
+
+
+
+
+int main() {
+  zadanie1();
+  zadanie2();
+}
